@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purelane — Plant-based homecare</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#4b3a8f',
+            'brand-lt': '#6b55b8',
+            surface: '#17102b',
+            accent: '#b8701c',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Decorative subtle background grid overlay */
+    .bg-grid-pattern {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(34, 14, 113, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(54, 24, 172, 0.04) 1px, transparent 1px);
+    }
+    
+    /* Smooth floating animation for ambient background orbs */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+    }
+    .animate-float-slow {
+      animation: float 10s ease-in-out infinite;
+    }
+    .animate-float-delayed {
+      animation: float 12s ease-in-out 3s infinite;
+    }
+  </style>
+</head>
+<body class="bg-[#f4f0fb] text-[#241a3d] antialiased relative min-h-screen overflow-x-hidden">
+
+  <!-- ==================== AMBIENT BACKGROUND SYSTEM ==================== -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <!-- Subtle Grid Pattern Overlay -->
+    <div class="absolute inset-0 bg-grid-pattern"></div>
+
+    <!-- Glowing Gradient Orbs -->
+    <div class="absolute -top-20 -left-20 w-96 h-96 bg-purple-300/40 rounded-full blur-3xl animate-float-slow"></div>
+    <div class="absolute top-1/3 -right-20 w-[30rem] h-[30rem] bg-amber-200/50 rounded-full blur-3xl animate-float-delayed"></div>
+    <div class="absolute top-2/3 -left-32 w-[28rem] h-[28rem] bg-indigo-200/40 rounded-full blur-3xl animate-float-slow"></div>
+    <div class="absolute bottom-10 right-10 w-96 h-96 bg-teal-100/60 rounded-full blur-3xl animate-float-delayed"></div>
+  </div>
+  <!-- =================================================================== -->
+
+  <!-- Header / Navigation -->
+  <header id="navbar" class="fixed top-4 left-0 right-0 z-40 px-4 transition-all duration-300">
+    <div class="max-w-6xl mx-auto flex items-center justify-between p-3 rounded-full bg-white/70 backdrop-blur-md border border-brand/10 shadow-sm">
+      <a href="#" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-200 to-brand/20 grid place-items-center text-accent font-bold">P</div>
+        <div>
+          <span class="block font-bold text-sm tracking-wide uppercase text-surface">Purelane</span>
+          <span class="block text-[8px] tracking-widest text-slate-500 uppercase">Homecare</span>
+        </div>
+      </a>
+      <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-700">
+        <a href="#shop" class="hover:text-accent transition-colors">Shop</a>
+        <a href="#combos" class="hover:text-accent transition-colors">Combos</a>
+        <a href="#bundles" class="hover:text-accent transition-colors">Bundles</a>
+        <a href="#why-bundles" class="hover:text-accent transition-colors">Why Bundles</a>
+        <a href="#reviews" class="hover:text-accent transition-colors">Reviews</a>
+      </nav>
+      
+      <!-- Cart Trigger Button -->
+      <button id="cart-toggle-btn" class="relative bg-teal-900 text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-md hover:bg-teal-800 transition-all flex items-center gap-2">
+        <span>Cart</span>
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        <span id="cart-badge" class="bg-amber-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Slide-out Cart Drawer -->
+  <div id="cart-backdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-[#f4f0fb]">
+      <h3 class="font-extrabold text-surface uppercase text-base flex items-center gap-2">
+        Your Cart (<span id="drawer-cart-count">0</span>)
+      </h3>
+      <button id="cart-close-btn" class="p-2 text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+    </div>
+    
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-3"></div>
+
+    <div class="p-4 border-t border-slate-100 bg-slate-50">
+      <div class="flex justify-between items-center mb-4">
+        <span class="text-sm font-semibold text-slate-600">Subtotal</span>
+        <span id="cart-subtotal" class="text-xl font-extrabold text-surface">₹0</span>
+      </div>
+      <button class="w-full bg-teal-900 hover:bg-teal-800 text-white font-bold py-3 rounded-full transition-all text-xs uppercase tracking-wider shadow-md">
+        Proceed to Checkout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Page Sections (relative z-10 keeps content elevated over background orbs) -->
+  <main class="px-4 relative z-10">
+    <section id="hero" class="min-h-[75vh] pt-32 pb-12 flex items-center max-w-6xl mx-auto"></section>
+    <section id="shop" class="py-12 max-w-6xl mx-auto"></section>
+    <section id="combos" class="py-12 max-w-6xl mx-auto"></section>
+    <section id="why-bundles" class="py-12 max-w-6xl mx-auto"></section>
+    <section id="bundles" class="py-12 max-w-6xl mx-auto"></section>
+    <section id="reviews" class="py-12 max-w-6xl mx-auto"></section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer" class="bg-surface text-slate-300 mt-20 border-t border-brand/20 relative z-10"></footer>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
